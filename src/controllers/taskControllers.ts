@@ -1,8 +1,8 @@
 import { NextFunction, Request, Response } from 'express';
 
 import { IdSchema, TaskSchema, TaskUpdateSchema } from '@/types/tasks';
-import tasks from '@/data/tasks';
-import AppError from '@/utils/appError';
+import ValidationError from '@/utils/validationError';
+import * as taskService from '@/services/taskService';
 
 export const getAllTasks = (
   req: Request,
@@ -10,6 +10,7 @@ export const getAllTasks = (
   next: NextFunction,
 ) => {
   try {
+    const tasks = taskService.getAllTasks();
     res.status(200).json({
       status: 'success',
       results: tasks.length,
@@ -26,19 +27,10 @@ export const createTask = (req: Request, res: Response, next: NextFunction) => {
   try {
     const parsedBody = TaskSchema.safeParse(req.body);
     if (!parsedBody.success) {
-      next(new AppError('Invalid body', 400));
-      return;
+      throw new ValidationError('Invalid body', parsedBody.error);
     }
     const { title, description } = parsedBody.data;
-    const task = {
-      id: tasks.length + 1,
-      title,
-      description,
-      completed: false,
-      createdAt: new Date(),
-      updatedAt: new Date(),
-    };
-    tasks.push(task);
+    const task = taskService.createTask(title, description);
     res.status(201).json({
       status: 'success',
       data: {
@@ -55,15 +47,10 @@ export const getTask = (req: Request, res: Response, next: NextFunction) => {
     const parsedParams = IdSchema.safeParse(req.params);
 
     if (!parsedParams.success) {
-      next(new AppError('Invalid parameters', 400));
-      return;
+      throw new ValidationError('Invalid parameters', parsedParams.error);
     }
     const { id } = parsedParams.data;
-    const task = tasks.find((task) => task.id === Number(id));
-    if (!task) {
-      next(new AppError('Task not found', 404));
-      return;
-    }
+    const task = taskService.getTaskById(Number(id));
     res.status(200).json({
       status: 'success',
       data: { task },
@@ -77,29 +64,19 @@ export const updateTask = (req: Request, res: Response, next: NextFunction) => {
   try {
     const parsedParams = IdSchema.safeParse(req.params);
     if (!parsedParams.success) {
-      next(new AppError('Invalid parameters', 400));
-      return;
+      throw new ValidationError('Invalid parameters', parsedParams.error);
     }
     const { id } = parsedParams.data;
     const parsedBody = TaskUpdateSchema.safeParse(req.body);
     if (!parsedBody.success) {
-      next(new AppError('Invalid body', 400));
-      return;
+      throw new ValidationError('Invalid body', parsedBody.error);
     }
     const { title, description, completed } = parsedBody.data;
-    const task = tasks.find((task) => task.id === Number(id));
-    if (!task) {
-      next(new AppError('Task not found', 404));
-      return;
-    }
-    const updatedTask = {
-      ...task,
-      title: title ?? task.title,
-      description: description ?? task.description,
-      completed: completed ?? task.completed,
-      updatedAt: new Date(),
-    };
-    tasks[task.id - 1] = updatedTask;
+    const updatedTask = taskService.updateTask(Number(id), {
+      title,
+      description,
+      completed,
+    });
     res.status(200).json({ status: 'success', data: { task: updatedTask } });
   } catch (error) {
     next(error);
@@ -110,16 +87,10 @@ export const deleteTask = (req: Request, res: Response, next: NextFunction) => {
   try {
     const parsedParams = IdSchema.safeParse(req.params);
     if (!parsedParams.success) {
-      next(new AppError('Invalid parameters', 400));
-      return;
+      throw new ValidationError('Invalid parameters', parsedParams.error);
     }
     const { id } = parsedParams.data;
-    const task = tasks.find((task) => task.id === Number(id));
-    if (!task) {
-      next(new AppError('Task not found', 404));
-      return;
-    }
-    tasks.splice(task.id - 1, 1);
+    taskService.deleteTask(Number(id));
     res.status(204).json({ status: 'success', data: null });
   } catch (error) {
     next(error);
