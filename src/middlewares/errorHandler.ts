@@ -27,7 +27,7 @@ const sendErrorProd = (err: AppError, res: Response) => {
   }
 };
 
-const errorController = (
+const errorHandler = (
   err: AppError,
   req: Request,
   res: Response,
@@ -45,4 +45,4 @@ const errorController = (
   }
 };
 
-export default errorController;
+export default errorHandler;

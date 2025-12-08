@@ -3,7 +3,7 @@ import morgan from 'morgan';
 
 import taskRouter from '@/routes/taskRoutes';
 import AppError from '@/utils/appError';
-import errorController from '@/controllers/errorController';
+import errorHandler from '@/middlewares/errorHandler';
 
 const app = express();
 
@@ -20,6 +20,6 @@ app.all(/.*/, (req: Request, res: Response, next: NextFunction) => {
   next(new AppError('Route not found', 404));
 });
 
-app.use(errorController);
+app.use(errorHandler);
 
 export default app;
