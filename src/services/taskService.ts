@@ -1,62 +1,37 @@
-import { ITask } from '@/types/tasks';
-import tasks from '@/data/tasks';
+import { CreateTaskDTO, ITask, UpdateTaskDTO } from '@/types/tasks';
+import * as TaskModel from '@/models/taskModel';
 import AppError from '@/utils/appError';
 
-export const getAllTasks = (): ITask[] => {
-  return tasks;
+export const getAllTasks = async (): Promise<ITask[]> => {
+  return await TaskModel.findAll();
 };
 
-export const createTask = (title: string, description: string): ITask => {
-  const task: ITask = {
-    id: tasks.length + 1,
-    title,
-    description,
-    completed: false,
-    createdAt: new Date(),
-    updatedAt: new Date(),
-  };
-  tasks.push(task);
-  return task;
+export const createTask = async (data: CreateTaskDTO): Promise<ITask> => {
+  return await TaskModel.create(data);
 };
 
-export const getTaskById = (id: number): ITask => {
-  const task = tasks.find((task) => task.id === id);
+export const getTaskById = async (id: number): Promise<ITask> => {
+  const task = await TaskModel.findById(id);
   if (!task) {
     throw new AppError('Task not found', 404);
   }
   return task;
 };
 
-export const updateTask = (
+export const updateTask = async (
   id: number,
-  updates: {
-    title?: string;
-    description?: string;
-    completed?: boolean;
-  },
-): ITask => {
-  const taskIndex = tasks.findIndex((task) => task.id === id);
-  if (taskIndex === -1) {
+  updates: UpdateTaskDTO,
+): Promise<ITask> => {
+  const task = await TaskModel.update(id, updates);
+  if (!task) {
     throw new AppError('Task not found', 404);
   }
-
-  const task = tasks[taskIndex];
-  const updatedTask: ITask = {
-    ...task,
-    title: updates.title ?? task.title,
-    description: updates.description ?? task.description,
-    completed: updates.completed ?? task.completed,
-    updatedAt: new Date(),
-  };
-
-  tasks[taskIndex] = updatedTask;
-  return updatedTask;
+  return task;
 };
 
-export const deleteTask = (id: number): void => {
-  const taskIndex = tasks.findIndex((task) => task.id === id);
-  if (taskIndex === -1) {
+export const deleteTask = async (id: number): Promise<void> => {
+  const deleted = await TaskModel.remove(id);
+  if (!deleted) {
     throw new AppError('Task not found', 404);
   }
-  tasks.splice(taskIndex, 1);
 };

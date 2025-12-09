@@ -26,6 +26,7 @@ export default tseslint.config(
       'perfectionist/sort-type-union-intersection-members': 'off',
       'perfectionist/sort-named-imports': 'off',
       'perfectionist/sort-imports': 'off',
+      'perfectionist/sort-modules': 'off',
     },
   },
 );

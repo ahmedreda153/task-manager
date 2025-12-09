@@ -20,6 +20,7 @@
   "dependencies": {
     "express": "^5.1.0",
     "morgan": "^1.10.1",
+    "mssql": "^12.2.0",
     "winston": "^3.18.3",
     "zod": "^4.1.12"
   },
@@ -28,6 +29,7 @@
     "@tsconfig/node22": "^22.0.5",
     "@types/express": "^5.0.5",
     "@types/morgan": "^1.9.10",
+    "@types/mssql": "^9.1.8",
     "@types/node": "^24.10.1",
     "eslint": "^9.39.1",
     "eslint-plugin-perfectionist": "^4.15.1",
