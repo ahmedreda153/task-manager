@@ -2,6 +2,7 @@ import { NextFunction, Request, Response } from 'express';
 
 import AppError from '@/utils/appError';
 import logger from '@/utils/logger';
+import { handlePrismaError, isPrismaError } from '@/utils/prismaError';
 
 const sendErrorDev = (err: AppError, res: Response) => {
   res.status(err.statusCode).json({
@@ -28,20 +29,29 @@ const sendErrorProd = (err: AppError, res: Response) => {
 };
 
 const errorHandler = (
-  err: AppError,
-  req: Request,
+  err: Error,
+  _req: Request,
   res: Response,
-  next: NextFunction,
+  _next: NextFunction,
 ) => {
-  err.statusCode = err.statusCode || 500;
-  err.status = err.status || 'error';
+  let error: AppError;
+  if (isPrismaError(err)) {
+    error = handlePrismaError(err);
+  } else if (err instanceof AppError) {
+    error = err;
+  } else {
+    error = new AppError(err.message || 'Something went wrong', 500);
+  }
+
+  error.statusCode = error.statusCode || 500;
+  error.status = error.status || 'error';
 
   logger.error(err);
 
   if (process.env.NODE_ENV === 'development') {
-    sendErrorDev(err, res);
+    sendErrorDev(error, res);
   } else {
-    sendErrorProd(err, res);
+    sendErrorProd(error, res);
   }
 };
 

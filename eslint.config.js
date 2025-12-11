@@ -27,6 +27,11 @@ export default tseslint.config(
       'perfectionist/sort-named-imports': 'off',
       'perfectionist/sort-imports': 'off',
       'perfectionist/sort-modules': 'off',
+      'perfectionist/sort-union-types': 'off',
+      '@typescript-eslint/no-unused-vars': [
+        'error',
+        { argsIgnorePattern: '^_', varsIgnorePattern: '^_' },
+      ],
     },
   },
 );

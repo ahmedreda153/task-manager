@@ -14,9 +14,7 @@ export const getAllTasks = async (
     res.status(200).json({
       status: 'success',
       results: tasks.length,
-      data: {
-        tasks,
-      },
+      data: { tasks },
     });
   } catch (error) {
     next(error);
@@ -36,9 +34,7 @@ export const createTask = async (
     const task = await taskService.createTask(parsedBody.data);
     res.status(201).json({
       status: 'success',
-      data: {
-        task,
-      },
+      data: { task },
     });
   } catch (error) {
     next(error);
@@ -52,12 +48,11 @@ export const getTask = async (
 ) => {
   try {
     const parsedParams = IdSchema.safeParse(req.params);
-
     if (!parsedParams.success) {
       throw new ValidationError('Invalid parameters', parsedParams.error);
     }
     const { id } = parsedParams.data;
-    const task = await taskService.getTaskById(Number(id));
+    const task = await taskService.getTaskById(id);
     res.status(200).json({
       status: 'success',
       data: { task },
@@ -82,10 +77,7 @@ export const updateTask = async (
     if (!parsedBody.success) {
       throw new ValidationError('Invalid body', parsedBody.error);
     }
-    const updatedTask = await taskService.updateTask(
-      Number(id),
-      parsedBody.data,
-    );
+    const updatedTask = await taskService.updateTask(id, parsedBody.data);
     res.status(200).json({ status: 'success', data: { task: updatedTask } });
   } catch (error) {
     next(error);
@@ -103,7 +95,7 @@ export const deleteTask = async (
       throw new ValidationError('Invalid parameters', parsedParams.error);
     }
     const { id } = parsedParams.data;
-    await taskService.deleteTask(Number(id));
+    await taskService.deleteTask(id);
     res.status(204).json({ status: 'success', data: null });
   } catch (error) {
     next(error);
