@@ -2,120 +2,150 @@
 	"info": {
 		"_postman_id": "c6246680-e1bb-45ba-8fbb-a54090c7c5ba",
 		"name": "Task Manager",
-		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
 		"_exporter_id": "28225883",
 		"_collection_link": "https://galactic-satellite-364811.postman.co/workspace/My-Workspace~ae9db2da-9433-40a7-8d29-0b0c24cc0fe9/collection/28225883-c6246680-e1bb-45ba-8fbb-a54090c7c5ba?action=share&source=collection_link&creator=28225883"
 	},
 	"item": [
 		{
-			"name": "Get All Tasks",
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "{{base_url}}/tasks",
-					"host": [
-						"{{base_url}}"
-					],
-					"path": [
-						"tasks"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Get Task",
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "{{base_url}}/tasks/1",
-					"host": [
-						"{{base_url}}"
-					],
-					"path": [
-						"tasks",
-						"1"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Create Task",
-			"request": {
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n    \"title\": \"Task 4\",\r\n    \"description\": \"Description 4\"\r\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
+			"name": "Tasks",
+			"item": [
+				{
+					"name": "Get All Tasks",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "{{base_url}}/tasks"
+					},
+					"response": []
 				},
-				"url": {
-					"raw": "{{base_url}}/tasks",
-					"host": [
-						"{{base_url}}"
-					],
-					"path": [
-						"tasks"
-					]
+				{
+					"name": "Get Task",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "{{base_url}}/tasks/8"
+					},
+					"response": []
+				},
+				{
+					"name": "Create Task",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"title\": \"Task 4\",\r\n    \"description\": \"Description 4\",\r\n    \"status\": \"Pending\",\r\n    \"assignee_id\": 1,\r\n    \"project_id\": 3\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{base_url}}/tasks"
+					},
+					"response": []
+				},
+				{
+					"name": "Update Task",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"status\": \"Inactive\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{base_url}}/tasks/6"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Task",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"title\": \"Title 77\"\r\n}"
+						},
+						"url": "{{base_url}}/tasks/8"
+					},
+					"response": []
 				}
-			},
-			"response": []
+			]
 		},
 		{
-			"name": "Update Task",
-			"request": {
-				"method": "PATCH",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n    \"title\": \"Updated Title 7\"\r\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
+			"name": "Projects",
+			"item": [
+				{
+					"name": "Get All Projects",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "{{base_url}}/projects"
+					},
+					"response": []
 				},
-				"url": {
-					"raw": "{{base_url}}/tasks/1",
-					"host": [
-						"{{base_url}}"
-					],
-					"path": [
-						"tasks",
-						"1"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "Delete Task",
-			"request": {
-				"method": "DELETE",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n    \"title\": \"Title 77\"\r\n}"
+				{
+					"name": "Get Project",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "{{base_url}}/projects/8"
+					},
+					"response": []
 				},
-				"url": {
-					"raw": "{{base_url}}/tasks/1",
-					"host": [
-						"{{base_url}}"
-					],
-					"path": [
-						"tasks",
-						"1"
-					]
+				{
+					"name": "Create Project",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"title\": \"Project 1\",\r\n    \"description\": \"Project 1 description\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{base_url}}/projects"
+					},
+					"response": []
+				},
+				{
+					"name": "Update Project",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"description\": \"\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{base_url}}/projects/6"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Project",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": "{{base_url}}/projects/8"
+					},
+					"response": []
 				}
-			},
-			"response": []
+			]
 		}
 	]
 }
