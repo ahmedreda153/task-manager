@@ -1,6 +1,13 @@
+import { TaskStatus as PrismaTaskStatus } from '../../generated/prisma/enums';
 import z from 'zod';
 
-export type TaskStatus = 'Todo' | 'InProgress' | 'Review' | 'Done';
+export const TASK_STATUSES = [
+  PrismaTaskStatus.Todo,
+  PrismaTaskStatus.InProgress,
+  PrismaTaskStatus.Review,
+  PrismaTaskStatus.Done,
+] as const;
+export type TaskStatus = (typeof TASK_STATUSES)[number];
 
 export interface ITask {
   id: string;
@@ -27,7 +34,7 @@ export const TaskSchema = z
       .min(1, 'Description cannot be empty')
       .nullable()
       .optional(),
-    status: z.enum(['Todo', 'InProgress', 'Review', 'Done'], {
+    status: z.enum(TASK_STATUSES, {
       error: "Status must be one of: 'Todo', 'InProgress', 'Review', or 'Done'",
     }),
     assigneeId: z
@@ -50,7 +57,7 @@ export const TaskUpdateSchema = z
       .nullable()
       .optional(),
     status: z
-      .enum(['Todo', 'InProgress', 'Review', 'Done'], {
+      .enum(TASK_STATUSES, {
         error:
           "Status must be one of: 'Todo', 'InProgress', 'Review', or 'Done'",
       })

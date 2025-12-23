@@ -36,10 +36,10 @@ model Project {
 }
 
 enum TaskStatus {
-  Todo
-  InProgress
-  Review
-  Done
+  Todo @map("todo")
+  InProgress @map("in_progress")
+  Review @map("review")
+  Done @map("done")
 }
 
 model Task {
