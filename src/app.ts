@@ -2,6 +2,7 @@ import express, { NextFunction, Request, Response } from 'express';
 import morgan from 'morgan';
 
 import taskRouter from '@/routes/taskRoutes';
+import projectRouter from '@/routes/projectRoutes';
 import AppError from '@/utils/appError';
 import errorHandler from '@/middlewares/errorHandler';
 
@@ -15,6 +16,7 @@ if (process.env.NODE_ENV === 'development') {
 app.use(express.json());
 
 app.use('/tasks', taskRouter);
+app.use('/projects', projectRouter);
 
 app.all(/.*/, (req: Request, res: Response, next: NextFunction) => {
   next(new AppError('Route not found', 404));
